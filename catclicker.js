@@ -1,34 +1,69 @@
+
+var catList = [
+	{
+		name: 'Grumpy',
+		image: 'grumpy.jpg',
+		count: 0
+	},
+	{
+		name: 'Cute-cute',
+		image: 'cute.jpg',
+		count: 0
+	},
+	{
+		name: 'Cups',
+		image: 'cups.jpg',
+		count: 0
+	}
+]
+
+
 function registerCounter () {
 
-	var firstCat = {
-		name: 'Grumpy',
-		element: document.getElementById('first-cat')
-	};
-	
-	var secondCat = {
-		name: 'Cute-cute',
-		element: document.getElementById('second-cat')
-	};
-
-	registerCat(firstCat);
-	registerCat(secondCat);
+	catList.forEach(function(el, i){
+		addToList(el);
+	});
 
 }
 
-function registerCat (cat) {
+function displayCat (cat) {
 
-	var clicky = cat.element.getElementsByClassName('clicky')[0];
+	var displayEl = document.getElementById('cat-display');
 
-	var nameEl = cat.element.getElementsByClassName('name')[0];
-	nameEl.innerText = cat.name;
+	// clean display
+	while (displayEl.firstChild) {
+    	displayEl.removeChild(displayEl.firstChild);
+	}
+
+	var title = document.createElement('h2');
+	title.innerText = cat.name;
+	displayEl.appendChild(title);
+
+	var img = document.createElement('img');
+	img.setAttribute('src', cat.image);
+	displayEl.appendChild(img);
+
+}
+
+function addToList (cat) {
+
+	var catListEl = document.getElementById('cat-list');
+
+	var elem = document.createElement('li');
 	
-	clicky.addEventListener('click', function() {
-		
-		var countElement = cat.element.getElementsByClassName('count')[0];
-		var count = parseInt(countElement.innerText);
-		countElement.innerText = count + 1;
 
-	}, false);
+	elem.textContent = cat.name;
+	elem.addEventListener('click', (function(cat) {
+		
+		return function(){
+			displayCat(cat);	
+		}
+		
+
+	})(cat), false);
+
+
+	catListEl.appendChild(elem);
 
 }
 
